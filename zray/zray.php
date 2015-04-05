@@ -108,14 +108,14 @@ class Laravel {
 	}
 	protected function loadLaravelPanel(&$storage){
 		global $app;
-		$storage['laravel'][] = array('Name'=>'Application Path','Value'=>app_path());
-		$storage['laravel'][] = array('Name'=>'Base Path','Value'=>base_path());
-		$storage['laravel'][] = array('Name'=>'Public Path','Value'=>public_path());
-		$storage['laravel'][] = array('Name'=>'Storage Path','Value'=>storage_path());
-		$storage['laravel'][] = array('Name'=>'URL Path','Value'=>url());
-		$storage['laravel'][] = array('Name'=>'Environment','Value'=>\App::environment());
-		$storage['laravel'][] = array('Name'=>'Version','Value'=>$app::VERSION);
-		$storage['laravel'][] = array('Name'=>'Locale','Value'=>$app->getLocale());
+		$storage['general'][] = array('Name'=>'Application Path','Value'=>app_path());
+		$storage['general'][] = array('Name'=>'Base Path','Value'=>base_path());
+		$storage['general'][] = array('Name'=>'Public Path','Value'=>public_path());
+		$storage['general'][] = array('Name'=>'Storage Path','Value'=>storage_path());
+		$storage['general'][] = array('Name'=>'URL Path','Value'=>url());
+		$storage['general'][] = array('Name'=>'Environment','Value'=>\App::environment());
+		$storage['general'][] = array('Name'=>'Version','Value'=>$app::VERSION);
+		$storage['general'][] = array('Name'=>'Locale','Value'=>$app->getLocale());
 	}
 	protected function loadUserPanel(&$storage){
 		global $app;
