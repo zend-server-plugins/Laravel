@@ -1,5 +1,6 @@
 {
-  "name" : "Laravel",
+  "name" : "laravel",
+  "display_name" : "Laravel 4/5",
   "version" : "1.0.0",
   "type": ["zray"],
   "logo": "zray/logo.png"
