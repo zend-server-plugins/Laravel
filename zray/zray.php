@@ -38,7 +38,7 @@ class Laravel {
 	}
 	public function laravelBeforeRun($context,&$storage){
 		global $app;
-		if (version_compare($app::VERSION,4,'<')||version_compare($app::VERSION,6,'>=')) {
+		if (!is_object($app) || version_compare($app::VERSION,4,'<')||version_compare($app::VERSION,6,'>=')) {
 			return; //this extension support only laravel 4/5
 		}
 		if (version_compare($app::VERSION,4.1,'<')) {
