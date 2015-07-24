@@ -124,9 +124,11 @@ class Laravel {
 			//guest
 			$storage['userInformation'][]=array('Name'=>'Guest','Additional Info'=>'Not Logged-in');
 			return;
+		} else {
+			$storage['userInformation'][]=array('Name'=>$user->id);
 		}
 		
-		$storage['userInformation'][]=$user->toArray();
+
 	}
 	protected function loadSymfonyRoutePanel(&$storage){
 		$name = \Route::currentRouteName();
