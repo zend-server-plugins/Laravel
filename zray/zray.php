@@ -6,7 +6,7 @@
 
 namespace ZRay;
 
-class zray
+class Laravel
 {
     private $visibleConfigurations = array(); //Put here Laravel configurations files which you want to be display (eg. app, database, cache, full list on /app/config/) 
     private $tracedAlready = false;
