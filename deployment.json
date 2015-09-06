@@ -1,7 +1,7 @@
 {
   "name" : "laravel",
   "display_name" : "Laravel 4/5",
-  "version" : "1.0.3",
+  "version" : "1.0.4",
   "type": ["zray"],
   "logo": "logo.png",
   "eula": "LICENSE.txt",
