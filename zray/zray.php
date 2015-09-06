@@ -20,9 +20,10 @@ class Laravel
     public function laravelRunExit($context, &$storage)
     {
         global $app,$zend_laravel_views,$zend_laravel_events;
-        if (version_compare($app::VERSION, 4, '<') || version_compare($app::VERSION, 6, '>=')) {
-            return; //this extension support only laravel 4/5
+        if (strpos(php_sapi_name(), 'cli') !== false || !is_object($app) || version_compare($app::VERSION, 4, '<') || version_compare($app::VERSION, 6, '>=')) {
+            return; //this extension support only laravel 4/5 non-cli
         }
+        
         $this->loadLaravelPanel($storage);
         if (version_compare($app::VERSION, 4.1, '>=')) {
             $this->loadLaravelRoutePanel($storage);
@@ -52,9 +53,10 @@ class Laravel
     public function laravelBeforeRun($context, &$storage)
     {
         global $app;
-        if (!is_object($app) || version_compare($app::VERSION, 4, '<') || version_compare($app::VERSION, 6, '>=')) {
-            return; //this extension support only laravel 4/5
+        if (strpos(php_sapi_name(), 'cli') !== false || !is_object($app) || version_compare($app::VERSION, 4, '<') || version_compare($app::VERSION, 6, '>=')) {
+            return; //this extension support only laravel 4/5 non-cli
         }
+        
         if (version_compare($app::VERSION, 4.1, '<')) {
             $this->loadSessionPanel($storage);
             $this->loadUserPanel($storage);
