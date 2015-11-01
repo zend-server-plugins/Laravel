@@ -43,11 +43,15 @@ class Laravel
     
     public function laravelLogWriterError($context, &$storage)
     {
-        $storage['logs'][] = array(
-                            'Level' => !empty(\Monolog\Logger::getLevelName($context['functionArgs'][0])) ? \Monolog\Logger::getLevelName($context['functionArgs'][0]) : $context['functionArgs'][0],
-                            'Message' => $context['functionArgs'][1],
-                            'Context' => empty($context['functionArgs'][2]) ? '' : json_encode($context['functionArgs'][2]),
-                         );
+        try {
+            $storage['logs'][] = array(
+                                'Level' => !empty(\Monolog\Logger::getLevelName($context['functionArgs'][0])) ? \Monolog\Logger::getLevelName($context['functionArgs'][0]) : $context['functionArgs'][0],
+                                'Message' => $context['functionArgs'][1],
+                                'Context' => empty($context['functionArgs'][2]) ? '' : json_encode($context['functionArgs'][2]),
+             );
+        } catch(Exception $e) {
+            // Can't serialize error
+        }
     }
     
     public function laravelBeforeRun($context, &$storage)
