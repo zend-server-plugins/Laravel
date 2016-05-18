@@ -142,7 +142,7 @@ class Laravel
         $storage['general'][] = array('Name' => 'Base Path','Value' => base_path());
         $storage['general'][] = array('Name' => 'Public Path','Value' => public_path());
         $storage['general'][] = array('Name' => 'Storage Path','Value' => storage_path());
-        $storage['general'][] = array('Name' => 'URL Path','Value' => url());
+        $storage['general'][] = array('Name' => 'URL Path','Value' => \URL::to('/'));
         $storage['general'][] = array('Name' => 'Environment','Value' => \App::environment());
         $storage['general'][] = array('Name' => 'Version','Value' => $app::VERSION);
         $storage['general'][] = array('Name' => 'Locale','Value' => $app->getLocale());
@@ -187,6 +187,7 @@ class Laravel
     
     protected function loadLaravelRoutePanel(&$storage)
     {
+        global $app;
         $route = \Route::getCurrentRoute();
         $routePanel = array();
         if (get_class($route) != 'Illuminate\Routing\Route') {
@@ -205,8 +206,10 @@ class Laravel
             $routePanel['Path'] = $path;
         }
         $routePanel['Action'] = $route->getActionName();
-        $routePanel['Before Filters'] = $route->beforeFilters();
-        $routePanel['After Filters'] = $route->afterFilters();
+        if (version_compare($app::VERSION, 5.1, '<=')) {
+          $routePanel['Before Filters'] = $route->beforeFilters();
+          $routePanel['After Filters'] = $route->afterFilters();
+        }
 
         $storage['route'][] = $routePanel;
     }
