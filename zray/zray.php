@@ -206,9 +206,15 @@ class Laravel
             $routePanel['Path'] = $path;
         }
         $routePanel['Action'] = $route->getActionName();
-        if (version_compare($app::VERSION, 5.1, '<=')) {
+        if (version_compare($app::VERSION, 5.1, '<')) {
           $routePanel['Before Filters'] = $route->beforeFilters();
           $routePanel['After Filters'] = $route->afterFilters();
+        } else {
+          $routePanel['Middleware(s)'] =  implode(', ', array_values($route->middleware()));
+          $action = $route->getAction();
+          $routePanel['Namespace'] = $action['namespace'];
+          $routePanel['Prefix'] = $action['prefix'];
+          $routePanel['Where'] = $action['where'];
         }
 
         $storage['route'][] = $routePanel;
