@@ -116,23 +116,38 @@ class Laravel
         }
         global $app,$zend_laravel_views;
         $zend_laravel_views = array();
-        $app['events']->listen(
-                    'composing:*',
-                    function ($view) use (&$storage) {
-                        global $zend_laravel_views;
-                        $data = array();
-                        foreach ($view->getData() as $key => $value) {
-                            if (is_object($value) && method_exists($value, 'toArray')) {
-                                $value = $value->toArray();
-                            }
-                            $data[$key] = $this->exportValue($value);
-                        }
-                        $zend_laravel_views[$view->getName()] = array(
-                            'Path' => $view->getPath(),
-                            'Params ('.count($data).')' => $data,
-                        );
+        
+        if (version_compare($app::VERSION, 5.4, '<')) {
+            $app['events']->listen('composing:*', function ($view) use (&$storage) {
+                global $zend_laravel_views;
+                $data = array();
+                foreach ($view->getData() as $key => $value) {
+                    if (is_object($value) && method_exists($value, 'toArray')) {
+                        $value = $value->toArray();
                     }
+                    $data[$key] = $this->exportValue($value);
+                }
+                $zend_laravel_views[$view->getName()] = array(
+                    'Path' => $view->getPath(),
+                    'Params (' . count($data) . ')' => $data
                 );
+            });
+        } else {
+            $app['events']->listen('composing:*', function ($view, $datas) use (&$storage) {
+                global $zend_laravel_views;
+                $data = array();
+                foreach ($datas as $key => $value) {
+                    if (is_object($value) && method_exists($value, 'toArray')) {
+                        $value = $value->toArray();
+                    }
+                    $data[$key] = $this->exportValue($value);
+                }
+                $zend_laravel_views[$view] = array(
+                    'Path' => '/',
+                    'Params (' . count($data) . ')' => $data
+                );
+            });
+        }
     }
     
     protected function loadLaravelPanel(&$storage)
@@ -190,9 +205,17 @@ class Laravel
         global $app;
         $route = \Route::getCurrentRoute();
         $routePanel = array();
-        if (get_class($route) != 'Illuminate\Routing\Route') {
-            return;
+        
+        if (version_compare($app::VERSION, 5.4, '<')) {
+            if (get_class($route) != 'Illuminate\Routing\Route') {
+                return;
+            }
+        }else{
+            if (get_class($route) != 'Illuminate\Support\Facades\Route') {
+                return;
+            }
         }
+        
         $domain = $route->domain();
         if (!empty($domain)) {
             $routePanel['Host'] = $domain;
